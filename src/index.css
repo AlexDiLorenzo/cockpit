@@ -1,0 +1,260 @@
+/* ============================================================
+   COCKPIT — Montpellier Dépannage
+   Tokens repris à l'identique du design system Depantime
+   (colors_and_type.css). Ne pas réinventer palette ni type.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ---- Couleurs mères (extraites du logo) ---- */
+  --md-brand-green:  #2C6126;
+  --md-brand-yellow: #E4E13C;
+  --md-brand-black:  #1A190F;
+
+  /* ---- Vert forêt (primary) ---- */
+  --md-forest-50:  #F1F7EC;
+  --md-forest-100: #DCEBCB;
+  --md-forest-200: #B8D79B;
+  --md-forest-300: #8FBE6A;
+  --md-forest-400: #64A142;
+  --md-forest-500: #3E7F2C;
+  --md-forest-600: #2C6126;
+  --md-forest-700: #255420;
+  --md-forest-800: #1F4A1D;
+  --md-forest-900: #123211;
+
+  /* ---- Jaune signalisation (accent — fond uniquement) ---- */
+  --md-signal-50:  #FDFCE8;
+  --md-signal-100: #F9F6B8;
+  --md-signal-200: #F3EC7E;
+  --md-signal-300: #E4E13C;
+  --md-signal-400: #C6C22B;
+  --md-signal-500: #A09D1E;
+  --md-signal-600: #7A7814;
+  --md-signal-800: #5C5A11;
+  --md-signal-900: #3D3B0B;
+
+  /* ---- Neutres chauds ---- */
+  --md-stone-50:  #FAFAF7;
+  --md-stone-100: #F1EFE8;
+  --md-stone-200: #D3D1C7;
+  --md-stone-300: #B4B2A9;
+  --md-stone-400: #888780;
+  --md-stone-500: #5F5E5A;
+  --md-stone-600: #444441;
+  --md-stone-800: #2C2C2A;
+  --md-stone-900: #1A190F;
+
+  /* ---- Sémantique ---- */
+  --md-success:    var(--md-forest-600);
+  --md-success-bg: var(--md-forest-50);
+  --md-warning:    var(--md-signal-500);
+  --md-warning-bg: var(--md-signal-50);
+  --md-danger:     #A32D2D;
+  --md-danger-bg:  #FCEBEB;
+  --md-info:       #185FA5;
+  --md-info-bg:    #E6F1FB;
+
+  /* ---- Alias ---- */
+  --color-primary:        var(--md-forest-600);
+  --color-primary-hover:  var(--md-forest-500);
+  --color-primary-active: var(--md-forest-700);
+  --color-accent:         var(--md-signal-300);
+  --color-accent-hover:   var(--md-signal-400);
+  --color-text:           var(--md-stone-900);
+  --color-text-muted:     var(--md-stone-500);
+  --color-bg:             #FFFFFF;
+  --color-bg-subtle:      var(--md-stone-50);
+  --color-border:         var(--md-stone-200);
+
+  /* ---- Type ---- */
+  --font-sans:    'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Mono', 'DM Sans', monospace;
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+
+  --fw-regular: 400; --fw-medium: 500; --fw-semibold: 600; --fw-bold: 700;
+
+  --fs-xs: 11px; --fs-sm: 12px; --fs-base: 13px; --fs-md: 14px;
+  --fs-lg: 16px; --fs-xl: 20px; --fs-2xl: 24px; --fs-3xl: 32px;
+  --fs-4xl: 44px; --fs-5xl: 60px;
+
+  --lh-tight: 1.15; --lh-snug: 1.3; --lh-normal: 1.5; --lh-relaxed: 1.7;
+  --tr-tight: -0.02em; --tr-caps: 0.07em; --tr-overline: 0.1em;
+
+  /* ---- Espacement (base 4px) ---- */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 20px;
+  --sp-6: 24px; --sp-8: 32px; --sp-10: 40px; --sp-12: 48px; --sp-16: 64px;
+
+  /* ---- Rayons ---- */
+  --radius-xs: 4px; --radius-sm: 6px; --radius-md: 8px; --radius-lg: 10px;
+  --radius-xl: 12px; --radius-2xl: 16px; --radius-pill: 999px;
+
+  /* ---- Élévation ---- */
+  --shadow-xs: 0 1px 2px rgba(26,25,15,0.04);
+  --shadow-sm: 0 1px 3px rgba(26,25,15,0.06);
+  --shadow-md: 0 4px 14px rgba(26,25,15,0.08);
+  --shadow-lg: 0 10px 40px rgba(26,25,15,0.15);
+  --shadow-primary: 0 4px 14px rgba(44,97,38,0.30);
+
+  /* ---- Mouvement ---- */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 120ms; --dur-base: 150ms; --dur-slow: 240ms;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--color-bg-subtle);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   RÔLES TYPOGRAPHIQUES
+   ============================================================ */
+
+.md-display { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-4xl); line-height: var(--lh-tight); letter-spacing: var(--tr-tight); }
+.md-h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-2xl); line-height: var(--lh-tight); letter-spacing: var(--tr-tight); margin: 0; }
+.md-h2 { font-family: var(--font-sans); font-weight: 700; font-size: var(--fs-xl); line-height: var(--lh-snug); margin: 0; }
+.md-h3 { font-family: var(--font-sans); font-weight: 600; font-size: var(--fs-lg); line-height: var(--lh-snug); margin: 0; }
+.md-body { font-family: var(--font-sans); font-size: var(--fs-md); line-height: var(--lh-normal); }
+.md-small { font-size: var(--fs-sm); color: var(--color-text-muted); }
+.md-overline { font-weight: 700; font-size: 10px; line-height: 1; letter-spacing: var(--tr-overline); text-transform: uppercase; color: var(--color-text-muted); }
+.md-label { font-weight: 700; font-size: 10px; line-height: 1; letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--color-text-muted); }
+.md-mono { font-family: var(--font-mono); font-weight: 500; font-size: var(--fs-base); font-feature-settings: "tnum"; }
+.md-mono-lg { font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-xl); font-feature-settings: "tnum"; }
+.md-pill { font-weight: 700; font-size: 11px; letter-spacing: 0.02em; }
+
+/* ============================================================
+   PRIMITIVES
+   ============================================================ */
+
+.card {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--sp-5);
+}
+
+.card-tight { padding: var(--sp-4); }
+
+button { font-family: var(--font-sans); cursor: pointer; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 9px 14px;
+  font-size: var(--fs-base);
+  font-weight: 600;
+  transition: background var(--dur-base) var(--ease-standard),
+              color var(--dur-base) var(--ease-standard),
+              border-color var(--dur-base) var(--ease-standard);
+}
+.btn-primary { background: var(--color-primary); color: #fff; }
+.btn-primary:hover { background: var(--color-primary-hover); }
+.btn-primary:active { background: var(--color-primary-active); }
+.btn-primary:disabled { background: var(--md-stone-300); cursor: not-allowed; }
+
+.btn-ghost { background: #fff; color: var(--color-text); border-color: var(--color-border); }
+.btn-ghost:hover { background: var(--md-forest-50); border-color: var(--md-forest-200); }
+
+.btn-quiet { background: transparent; color: var(--color-text-muted); border-color: transparent; }
+.btn-quiet:hover { background: var(--md-stone-100); color: var(--color-text); }
+
+.btn-danger { background: #fff; color: var(--md-danger); border-color: var(--md-danger); }
+.btn-danger:hover { background: var(--md-danger-bg); }
+
+.btn-sm { padding: 5px 10px; font-size: var(--fs-sm); }
+
+input, select, textarea {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  color: var(--color-text);
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px;
+  transition: border-color var(--dur-base) var(--ease-standard),
+              box-shadow var(--dur-base) var(--ease-standard);
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--md-forest-600);
+  box-shadow: 0 0 0 3px rgba(44,97,38,0.15);
+}
+input.num { font-family: var(--font-mono); font-feature-settings: "tnum"; text-align: right; }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-weight: 700; font-size: 11px;
+  white-space: nowrap;
+}
+.pill-ok     { background: var(--md-forest-50);  color: var(--md-forest-700); }
+.pill-warn   { background: var(--md-signal-50);  color: var(--md-signal-800); }
+.pill-danger { background: var(--md-danger-bg);  color: var(--md-danger); }
+.pill-info   { background: var(--md-info-bg);    color: var(--md-info); }
+.pill-neutral{ background: var(--md-stone-100);  color: var(--md-stone-600); }
+
+/* ---- Tableaux ---- */
+table.md-table { width: 100%; border-collapse: collapse; }
+table.md-table th {
+  text-align: left; padding: 8px 10px;
+  font-weight: 700; font-size: 10px; letter-spacing: var(--tr-caps);
+  text-transform: uppercase; color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+table.md-table td {
+  padding: 10px; font-size: var(--fs-base);
+  border-bottom: 1px solid var(--md-stone-100);
+}
+table.md-table tbody tr:hover { background: var(--md-stone-50); }
+table.md-table td.num, table.md-table th.num {
+  text-align: right; font-family: var(--font-mono); font-feature-settings: "tnum";
+}
+table.md-table th.num { font-family: var(--font-sans); }
+
+/* ---- Divers ---- */
+.row { display: flex; align-items: center; gap: var(--sp-3); }
+.spacer { flex: 1; }
+.grid { display: grid; gap: var(--sp-4); }
+
+.empty { color: var(--md-stone-400); font-family: var(--font-mono); }
+
+.link-quiet { color: var(--md-forest-600); text-decoration: none; cursor: pointer; }
+.link-quiet:hover { text-decoration: underline; }
+
+/* Bandeau accent — réservé aux alertes urgentes (seule surface signal-300 admise) */
+.callout-urgent {
+  background: var(--md-signal-300);
+  color: var(--md-stone-900);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-3) var(--sp-4);
+  font-weight: 600;
+}
+
+/* Scrollbars discrètes */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--md-stone-200); border-radius: var(--radius-pill); border: 3px solid var(--color-bg-subtle); }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* Impression — les écrans 2 et 3 sont projetés puis parfois imprimés */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+  .card { box-shadow: none; break-inside: avoid; }
+}
+
+@keyframes toastIn { from { transform: translateX(80px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

@@ -1,0 +1,7 @@
+node_modules
+dist
+postgres
+.env
+.git
+*.xlsx
+*.log

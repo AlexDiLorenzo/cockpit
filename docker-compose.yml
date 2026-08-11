@@ -1,0 +1,86 @@
+# Cockpit — front + API + base, à côté de DepanTime sur le même VPS.
+#
+# Tout est servi depuis un seul domaine : nginx sert le front et proxifie
+# /api/ vers l'API sur le réseau interne. Le navigateur ne voit qu'une
+# origine — il n'y a donc pas de CORS à régler.
+#
+# Le nom « pilotage » distingue cette pile du « cockpit patrimonial »
+# déjà installé dans /srv/cockpit sur le même serveur.
+#
+# Trois réseaux :
+#   web            — partagé avec Traefik (externe, existe déjà)
+#   pilotage-net   — interne à cette pile
+#   depantime-net  — celui de DepanTime, rejoint en lecture pour la passerelle
+#                    de pointage. Sans lui, jours travaillés et heures payées
+#                    restent en saisie manuelle : l'application fonctionne quand même.
+
+networks:
+  web:
+    external: true
+  depantime-net:
+    external: true
+    name: depantime_depantime-net
+  pilotage-net:
+    driver: bridge
+
+services:
+  pilotage-front:
+    build: .
+    container_name: pilotage-front
+    restart: unless-stopped
+    networks: [pilotage-net, web]
+    depends_on: [pilotage-api]
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=web
+      - traefik.http.routers.pilotage.rule=Host(`${CK_HOST:-pilotage.alex-worksmart.com}`)
+      - traefik.http.routers.pilotage.entrypoints=websecure
+      - traefik.http.routers.pilotage.tls=true
+      - traefik.http.routers.pilotage.tls.certresolver=le
+      - traefik.http.services.pilotage.loadbalancer.server.port=80
+      - traefik.http.routers.pilotage.middlewares=ratelimit@docker,sec-headers@docker
+
+  pilotage-api:
+    build: ./api
+    container_name: pilotage-api
+    restart: unless-stopped
+    environment:
+      - CK_PORT=3100
+      - CK_DB_HOST=pilotage-db
+      - CK_DB_PORT=5432
+      - CK_DB_NAME=${CK_DB_NAME:-cockpit}
+      - CK_DB_USER=${CK_DB_USER:-cockpit}
+      - CK_DB_PASSWORD=${CK_DB_PASSWORD}
+      - CK_JWT_SECRET=${CK_JWT_SECRET}
+      - CK_DEFAULT_PASSWORD=${CK_DEFAULT_PASSWORD:-cockpit}
+      - CK_RETENTION_MONTHS=${CK_RETENTION_MONTHS:-14}
+      # Front et API partagent l'origine (nginx proxifie /api/) : pas de CORS.
+      - CK_CORS_ORIGIN=${CK_CORS_ORIGIN:-}
+      # Passerelle DepanTime — de conteneur à conteneur, rien ne sort du VPS.
+      - CK_DEPANTIME_URL=${CK_DEPANTIME_URL:-http://depantime-api:3000}
+      - CK_DEPANTIME_USER=${CK_DEPANTIME_USER:-}
+      - CK_DEPANTIME_PASSWORD=${CK_DEPANTIME_PASSWORD:-}
+      # API PowerPanne — à renseigner le jour où elle ouvre.
+      - CK_POWERPANNE_URL=${CK_POWERPANNE_URL:-}
+      - CK_POWERPANNE_TOKEN=${CK_POWERPANNE_TOKEN:-}
+    expose: ["3100"]
+    networks: [pilotage-net, depantime-net]
+    depends_on: [pilotage-db]
+
+  pilotage-db:
+    image: postgres:15-alpine
+    container_name: pilotage-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${CK_DB_NAME:-cockpit}
+      - POSTGRES_USER=${CK_DB_USER:-cockpit}
+      - POSTGRES_PASSWORD=${CK_DB_PASSWORD}
+    volumes:
+      - /srv/pilotage/postgres:/var/lib/postgresql/data
+    expose: ["5432"]
+    networks: [pilotage-net]
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${CK_DB_USER:-cockpit}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
