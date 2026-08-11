@@ -250,25 +250,30 @@ Les données ne bougent pas : elles sont dans le volume
 La base contient ce qui ne se réimporte pas : cibles, actions de comité,
 seuils, paramètres de coût, rapprochements de noms.
 
-```bash
-# Sauvegarde
-sudo mkdir -p /srv/pilotage/sauvegardes
-sudo docker exec pilotage-db pg_dump -U cockpit cockpit \
-  | gzip > /srv/pilotage/sauvegardes/cockpit-$(date +%F).sql.gz
-
-# Restauration
-gunzip -c /srv/pilotage/sauvegardes/cockpit-2026-08-11.sql.gz \
-  | sudo docker exec -i pilotage-db psql -U cockpit cockpit
-```
-
-En tâche planifiée, une fois par nuit :
+`scripts/sauvegarde.sh` fait le dump, vérifie qu'il n'est pas vide et purge
+au-delà de 30 jours. En tâche planifiée, une fois par nuit — le crontab de
+l'utilisateur suffit, il est dans le groupe `docker` :
 
 ```bash
-sudo crontab -e
+crontab -e
 ```
 
 ```cron
-30 3 * * * docker exec pilotage-db pg_dump -U cockpit cockpit | gzip > /srv/pilotage/sauvegardes/cockpit-$(date +\%F).sql.gz && find /srv/pilotage/sauvegardes -name '*.sql.gz' -mtime +30 -delete
+30 3 * * * /srv/pilotage/scripts/sauvegarde.sh >> /srv/pilotage/sauvegardes/cron.log 2>&1
+```
+
+À la main :
+
+```bash
+/srv/pilotage/scripts/sauvegarde.sh
+ls -lh /srv/pilotage/sauvegardes/
+```
+
+Restauration :
+
+```bash
+gunzip -c /srv/pilotage/sauvegardes/cockpit-2026-08-11.sql.gz \
+  | docker exec -i pilotage-db psql -U cockpit cockpit
 ```
 
 ---

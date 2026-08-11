@@ -2,5 +2,6 @@ node_modules/
 dist/
 .env
 postgres/
+sauvegardes/
 *.log
 .DS_Store
