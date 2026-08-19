@@ -44,6 +44,10 @@ services:
     build: ./api
     container_name: pilotage-api
     restart: unless-stopped
+    # Tout /srv/pilotage/.env est transmis : ajouter un compte ne demande pas
+    # de modifier ce fichier, seulement api/db.js et le .env du serveur.
+    env_file:
+      - .env
     environment:
       - CK_PORT=3100
       - CK_DB_HOST=pilotage-db
@@ -52,7 +56,6 @@ services:
       - CK_DB_USER=${CK_DB_USER:-cockpit}
       - CK_DB_PASSWORD=${CK_DB_PASSWORD}
       - CK_JWT_SECRET=${CK_JWT_SECRET}
-      - CK_DEFAULT_PASSWORD=${CK_DEFAULT_PASSWORD:-cockpit}
       - CK_RETENTION_MONTHS=${CK_RETENTION_MONTHS:-14}
       # Front et API partagent l'origine (nginx proxifie /api/) : pas de CORS.
       - CK_CORS_ORIGIN=${CK_CORS_ORIGIN:-}

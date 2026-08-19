@@ -162,6 +162,49 @@ const DEFAULT_SETTINGS = {
   depantime: { siteId: null, aliases: {} },
 }
 
+// ── Comptes applicatifs ──────────────────────────────────────────────────
+// Les comptes ne se creent PAS depuis l'application : ils sont declares ici et
+// leur mot de passe vient du .env du serveur (/srv/pilotage/.env), reapplique a
+// chaque demarrage. Meme mecanisme que Depantime, Caisse et Flotte.
+//
+// Ajouter quelqu'un : une ligne ici, une ligne CK_PASS_<PRENOM> dans le .env,
+// puis `cd /srv/pilotage && docker compose up -d`.
+//
+// Sans variable d'environnement, le compte n'est pas cree. Il n'y a plus de mot
+// de passe par defaut : l'ancien valait « cockpit » et etait ecrit en clair
+// dans les journaux au demarrage.
+//
+// Roles : 'admin' (tout) ou 'comite' (consultation).
+const DEFAULT_USERS = [
+  { username: 'alexandre', displayName: 'Alexandre', role: 'admin', envKey: 'CK_PASS_ALEXANDRE' },
+  { username: 'norbert',   displayName: 'Norbert',   role: 'admin', envKey: 'CK_PASS_NORBERT' },
+]
+
+async function seedUsers() {
+  for (const u of DEFAULT_USERS) {
+    const motDePasse = process.env[u.envKey]
+    if (!motDePasse) continue
+    const hash = bcrypt.hashSync(motDePasse, 10)
+    await pool.query(
+      `INSERT INTO users(username, display_name, password_hash, role)
+       VALUES ($1, $2, $3, $4)
+       ON CONFLICT (username) DO UPDATE
+         SET password_hash = EXCLUDED.password_hash,
+             display_name  = EXCLUDED.display_name,
+             role          = EXCLUDED.role`,
+      [u.username, u.displayName, hash, u.role]
+    )
+  }
+  // Les comptes hors liste sont signales, jamais supprimes : une faute de
+  // frappe dans le .env ne doit pas fermer l'acces a tout le monde.
+  const declares = DEFAULT_USERS.map((u) => u.username)
+  const { rows } = await pool.query('SELECT username FROM users ORDER BY username')
+  const orphelins = rows.map((r) => r.username).filter((n) => !declares.includes(n))
+  if (orphelins.length) {
+    console.warn(`[pilotage] comptes hors liste : ${orphelins.join(', ')}`)
+  }
+}
+
 export async function initDB() {
   await pool.query(SCHEMA)
 
@@ -173,17 +216,7 @@ export async function initDB() {
     )
   }
 
-  const { rows } = await pool.query('SELECT COUNT(*)::int AS n FROM users')
-  if (rows[0].n === 0) {
-    const pass = process.env.CK_DEFAULT_PASSWORD || 'cockpit'
-    const hash = bcrypt.hashSync(pass, 10)
-    await pool.query(
-      `INSERT INTO users(username, display_name, password_hash, role)
-       VALUES ($1, $2, $3, 'admin')`,
-      ['admin', 'Administrateur', hash]
-    )
-    console.log(`[cockpit] compte « admin » créé (mot de passe : ${pass})`)
-  }
+  await seedUsers()
 
   // Purge : au-delà de 14 mois, les interventions ne servent plus aucune
   // courbe (8 semaines et 12 mois sont les horizons les plus longs).
