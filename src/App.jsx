@@ -320,28 +320,78 @@ function Login({ onSuccess }) {
     }
   }
 
+  // Gabarit commun à toutes les applications :
+  // PLATEFORME_APPLICATIONS/brand/patterns/ecran-connexion.jsx
+  const T = {
+    fond: '#F1EFE8', carte: '#fff', bord: '#D3D1C7', encre: '#1A190F',
+    gris: '#888780', vert: '#2C6126', jaune: '#E4E13C', rouge: '#A32D2D',
+    titre: "'Space Mono', monospace", corps: "'DM Sans', sans-serif",
+  }
+  const styleChamp = {
+    width: '100%', padding: '10px 12px', borderRadius: 8,
+    border: `1px solid ${T.bord}`, fontSize: 14, fontFamily: T.corps,
+    margin: '6px 0 12px', boxSizing: 'border-box',
+  }
+  const styleLabel = {
+    fontSize: 10, fontWeight: 700, color: T.gris,
+    textTransform: 'uppercase', letterSpacing: '0.07em',
+  }
+
   return (
-    <div style={{ display: 'grid', placeItems: 'center', minHeight: '100vh', padding: 24 }}>
-      <form onSubmit={soumettre} className="card" style={{ width: 380, padding: 32 }}>
-        <img src="/logo.png" alt="Montpellier Dépannage" style={{ width: '100%', marginBottom: 6 }} />
-        <div className="md-overline" style={{ textAlign: 'center', letterSpacing: '0.16em', marginBottom: 24 }}>
-          Pilotage
+    <div style={{
+      minHeight: '100vh', display: 'flex', alignItems: 'center',
+      justifyContent: 'center', background: T.fond,
+      fontFamily: T.corps, padding: 20,
+    }}>
+      <form onSubmit={soumettre} style={{
+        background: T.carte, borderRadius: 12, padding: 36,
+        width: 360, maxWidth: '100%', border: `1px solid ${T.bord}`,
+        boxShadow: '0 10px 40px rgba(26,25,15,0.15)',
+      }}>
+        <div style={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          gap: 12, marginBottom: 24,
+        }}>
+          <img src="/logo.png" alt="Montpellier Dépannage"
+               style={{ width: 168, maxWidth: '100%', height: 'auto' }} />
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              fontSize: 22, fontWeight: 700, fontFamily: T.titre,
+              color: T.encre, letterSpacing: '-0.02em',
+            }}>Pilotage</div>
+            <div style={{
+              fontSize: 10, color: T.gris, textTransform: 'uppercase',
+              letterSpacing: '0.1em', fontWeight: 700,
+            }}>Tableau de bord</div>
+          </div>
         </div>
 
-        <div className="grid" style={{ gap: 14 }}>
-          <label style={{ display: 'grid', gap: 5 }}>
-            <span className="md-label">Identifiant</span>
-            <input value={u} onChange={(e) => setU(e.target.value)} autoFocus autoComplete="username" />
-          </label>
-          <label style={{ display: 'grid', gap: 5 }}>
-            <span className="md-label">Mot de passe</span>
-            <input type="password" value={p} onChange={(e) => setP(e.target.value)} autoComplete="current-password" />
-          </label>
-          {err && <div className="md-small" style={{ color: 'var(--md-danger)', fontWeight: 600 }}>{err}</div>}
-          <button className="btn btn-primary" type="submit" disabled={busy || !u || !p}
-            style={{ justifyContent: 'center', marginTop: 4 }}>
-            {busy ? 'Connexion…' : 'Se connecter'}
-          </button>
+        <label style={styleLabel}>Identifiant</label>
+        <input value={u} onChange={(e) => setU(e.target.value)} autoFocus
+               autoComplete="username" required style={styleChamp} />
+
+        <label style={styleLabel}>Mot de passe</label>
+        <input type="password" value={p} onChange={(e) => setP(e.target.value)}
+               autoComplete="current-password" required
+               style={{ ...styleChamp, margin: '6px 0 20px' }} />
+
+        {err && <p style={{ color: T.rouge, fontSize: 12, marginBottom: 12 }}>{err}</p>}
+
+        <button type="submit" disabled={busy || !u || !p} style={{
+          width: '100%', padding: '12px 0', borderRadius: 8, border: 'none',
+          background: T.vert, color: '#fff', fontWeight: 700, fontSize: 14,
+          fontFamily: T.corps, cursor: busy ? 'wait' : 'pointer',
+          boxShadow: '0 4px 14px rgba(44,97,38,0.30)',
+        }}>
+          {busy ? 'Connexion…' : 'Se connecter'}
+        </button>
+
+        <div style={{
+          marginTop: 18, padding: '8px 12px', background: T.jaune,
+          borderRadius: 6, fontSize: 11, color: T.encre, fontWeight: 700,
+          textAlign: 'center',
+        }}>
+          24 / 7 · DÉPANNAGE MONTPELLIER
         </div>
       </form>
     </div>
