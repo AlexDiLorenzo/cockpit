@@ -40,7 +40,7 @@ export default function Settings({ settings, onSaveSettings, range, imports, mod
       <section className="card">
         <h3 className="md-h3" style={{ marginBottom: 12 }}>Source de données</h3>
         <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
-          <Info label="Mode" val={mode === 'remote' ? 'Serveur Cockpit' : 'Poste local'}
+          <Info label="Mode" val={mode === 'remote' ? 'Serveur Pilotage' : 'Poste local'}
             note={mode === 'remote' ? 'PostgreSQL, données partagées' : 'IndexedDB, données sur ce poste'} />
           <Info label="Interventions stockées" val={nb(range?.n ?? 0)}
             note={`dont ${nb(range?.grouped ?? 0)} en facturation groupée`} />

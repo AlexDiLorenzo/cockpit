@@ -239,8 +239,8 @@ function Sidebar({ onglet, setOnglet, user, mode, nbInterventions, actionsOuvert
       position: 'sticky', top: 0, height: '100vh',
     }}>
       <div style={{ padding: '20px 18px 16px', borderBottom: '1px solid var(--color-border)' }}>
-        <img src="/logo.svg" alt="Montpellier Dépannage" style={{ width: '100%', maxWidth: 190, display: 'block' }} />
-        <div className="md-overline" style={{ marginTop: 12, letterSpacing: '0.14em' }}>Cockpit</div>
+        <img src="/logo.png" alt="Montpellier Dépannage" style={{ width: '100%', maxWidth: 190, display: 'block' }} />
+        <div className="md-overline" style={{ marginTop: 12, letterSpacing: '0.14em' }}>Pilotage</div>
       </div>
 
       <nav style={{ padding: 12, flex: 1 }}>
@@ -277,7 +277,7 @@ function Sidebar({ onglet, setOnglet, user, mode, nbInterventions, actionsOuvert
       <div style={{ padding: 16, borderTop: '1px solid var(--color-border)' }}>
         <div className="md-small">{nb(nbInterventions)} interventions chargées</div>
         <div className="md-small" style={{ marginTop: 2 }}>
-          {mode === 'remote' ? 'Serveur Cockpit' : 'Poste local'}
+          {mode === 'remote' ? 'Serveur Pilotage' : 'Poste local'}
         </div>
         {user && mode === 'remote' && (
           <div className="row" style={{ marginTop: 10 }}>
@@ -296,8 +296,8 @@ function Sidebar({ onglet, setOnglet, user, mode, nbInterventions, actionsOuvert
 function Splash() {
   return (
     <div style={{ display: 'grid', placeItems: 'center', minHeight: '100vh', gap: 20 }}>
-      <img src="/logo.svg" alt="Montpellier Dépannage" style={{ width: 240 }} />
-      <Spinner label="Ouverture du Cockpit…" />
+      <img src="/logo.png" alt="Montpellier Dépannage" style={{ width: 240 }} />
+      <Spinner label="Ouverture de Pilotage…" />
     </div>
   )
 }
@@ -323,9 +323,9 @@ function Login({ onSuccess }) {
   return (
     <div style={{ display: 'grid', placeItems: 'center', minHeight: '100vh', padding: 24 }}>
       <form onSubmit={soumettre} className="card" style={{ width: 380, padding: 32 }}>
-        <img src="/logo.svg" alt="Montpellier Dépannage" style={{ width: '100%', marginBottom: 6 }} />
+        <img src="/logo.png" alt="Montpellier Dépannage" style={{ width: '100%', marginBottom: 6 }} />
         <div className="md-overline" style={{ textAlign: 'center', letterSpacing: '0.16em', marginBottom: 24 }}>
-          Cockpit
+          Pilotage
         </div>
 
         <div className="grid" style={{ gap: 14 }}>
