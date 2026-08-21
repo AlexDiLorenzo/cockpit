@@ -179,6 +179,7 @@ const DEFAULT_USERS = [
   { username: 'alexandre', displayName: 'Alexandre', role: 'admin', envKey: 'CK_PASS_ALEXANDRE' },
   { username: 'norbert',   displayName: 'Norbert',   role: 'admin', envKey: 'CK_PASS_NORBERT' },
   { username: 'marie',     displayName: 'Marie',     role: 'admin', envKey: 'CK_PASS_MARIE' },
+  { username: 'ilies',     displayName: 'Ilies',     role: 'admin', envKey: 'CK_PASS_ILIES' },
 ]
 
 async function seedUsers() {
